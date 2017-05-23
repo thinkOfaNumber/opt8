@@ -1,0 +1,119 @@
+<template>
+  <style>
+    .opt8 {
+      width: 100%;
+    }
+
+    .opt8 > .input {
+      padding: 5px;
+      border: 1px #ccc solid;
+      border-radius: 4px;
+      width: 100%;
+      margin-right: 20px;
+    }
+    
+    .opt8 .selection > .pill {
+      display: inline-block;
+      white-space: nowrap;
+      border: 1px #888 solid;
+      border-radius: 2px;
+      background-color: #ddd;
+      padding: 0px 7px;
+      margin: 1px 3px;
+    }
+    .opt8 .selection > .pill:after {
+      font-family: FontAwesome;
+      color: #888;
+      content: "\f00d";
+      padding-left: 3px;
+    }
+
+    opt8 .selection .placeholder {
+      margin: 0;
+    }
+
+    .opt8 .chevron {
+      float: right;
+      width: 20px;
+    }
+    .opt8 .chevron:after {
+      font-family: FontAwesome;
+      content: "\f0d7";
+      padding: 0 6px 0 6px;
+    }
+
+    .opt8 > .options {
+      position: relative;
+      display: block;
+    }
+    .opt8 input {
+      border: none;
+    }
+    .opt8 input[type="text"]:focus {
+      border: none;
+      box-shadow: white;
+      outline: 0 none;
+    }
+    .opt8 .options-container {
+      position: absolute;
+      width: 100%;
+      border: 1px #ccc solid;
+      border-radius: 4px;
+      background: white;
+      padding: 2px;
+    }
+    .opt8 .options-container > ul {
+      padding: 0;
+      width: 100%;
+    }
+    .opt8 .options-container > ul > li {
+      list-style-type: none;
+      padding: 0;
+    }
+    .opt8 .options-container > ul > li > a {
+      border: 1px #fff solid;
+      border-radius: 2px;
+      background-color: white;
+      color: black;
+      padding: 5px 5px;
+      text-decoration: none;
+      display: block; 
+    }
+    .opt8 .options-container > ul > li > a.active {
+      background-color: #ddd;
+      border-color: #ddd;
+    }
+    .opt8 .options-container > ul > li > a:hover, .opt8 .options-container > ul > li.selected > a {
+      border-color: #aaa;
+      background-color: #eee;
+      cursor: pointer;
+    }
+    .clear {
+      clear: left;
+      line-height: 0;
+      height: 0;
+    }
+  </style>
+
+  <div class="opt8">
+    <div class="input" click.delegate="toggle()">
+      <span class="chevron"></span>
+      <div class="selection">
+        <span class="placeholder" show.bind="showPlaceholder">Please choose an option...</span>
+        <span class="pill" repeat.for="s of meta" if.bind="s.selected" click.delegate="remove($index)">${s.option}</span>
+        <input type="text" value.bind="search" focus.bind="focusSearch" ref="searchElement"></input>
+      </div>
+      <div class="clear"></div>
+    </div>
+
+    <div class="options" show.bind="showOptions">
+      <div class="options-container">
+        <ul>
+          <li repeat.for="o of meta | filter:search" element.ref="visibleOptions[$index]" model.bind="o">
+            <a click.delegate="select(o)" class="${o.selected ? 'active' : '' }">${o.option}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
